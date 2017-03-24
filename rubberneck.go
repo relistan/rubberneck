@@ -84,13 +84,12 @@ func (p *Printer) processOne(value reflect.Value, indent int) {
 		}
 
 		field := value.Field(i)
-		realKind := field.Kind()
 
-		if realKind == reflect.Ptr {
-			realKind = field.Elem().Kind()
+		if field.Kind() == reflect.Ptr {
+			field = field.Elem()
 		}
 
-		switch realKind {
+		switch field.Kind() {
 		case reflect.Struct:
 			p.Show("%s * %s:", strings.Repeat("  ", indent), name)
 			p.processOne(reflect.ValueOf(field.Interface()), indent+1)
