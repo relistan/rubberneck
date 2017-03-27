@@ -6,6 +6,8 @@ Rubberneck
 Pretty(ish) print configuration output on application startup! Make it easy
 to see what those env vars actually told your app to do!
 
+![Rubberneck](assets/rubberneck.png)
+
 The Problem
 -----------
 
