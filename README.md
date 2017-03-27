@@ -128,3 +128,20 @@ variable configurations or CLI flags, and therefore does not attempt to handle
 all possible structures. It assumes that you don't have anything but basic
 types inside of slices, for example. This is generally what you want. If it's
 not, then you might be better off dumping out YAML or something more complex.
+
+Contributing
+------------
+
+Contributions are more than welcome. Bug reports with specific reproduction
+steps are great. If you have a code contribution you'd like to make, open a
+pull request with suggested code.
+
+Pull requests should:
+
+ * Clearly state their intent in the title
+ * Have a description that explains the need for the changes
+ * Include tests!
+ * Not break the public API
+
+Ping us to let us know you're working on something interesting by opening a
+GitHub Issue on the project.
