@@ -60,12 +60,33 @@ func NewPrinter(fn printerFunc, lineFeed int) *Printer {
 	return p
 }
 
-// Print attempts to pretty print the contents of obj in a format suitable
-// for displaying the configuration of an application on startup.
-func (p *Printer) Print(obj interface{}) {
-	p.Show("Settings %s", strings.Repeat("=", 40))
-	p.processOne(reflect.ValueOf(obj), 0)
-	p.Show("%s", strings.Repeat("=", 49))
+// Print attempts to pretty print the contents of each obj in a format suitable
+// for displaying the configuration of an application on startup. It uses a
+// default label of 'Settings' for the output.
+func (p *Printer) Print(objs ...interface{}) {
+	// Add some protection against accidentally providing this method with
+	// a label.
+	if len(objs) > 0 {
+		switch objs[0].(type) {
+		case string:
+			p.Show(" *** Expected to print a struct, got: '%s' ***", objs[0])
+			return
+		}
+	}
+	p.PrintWithLabel("Settings", objs...)
+}
+
+// PrintWithLabel attempts to pretty print the contents of each obj in a format
+// suitable for displaying the configuration of an application on startup. It
+// takes a label argument which is a string to be printed into the title bar in
+// the output.
+func (p *Printer) PrintWithLabel(label string, objs ...interface{}) {
+	p.Show("%s %s", label, strings.Repeat("-", 50 - len(label) - 1))
+	for _, obj := range objs {
+		p.processOne(reflect.ValueOf(obj), 0)
+	}
+	p.Show("%s", strings.Repeat("-", 50))
+
 }
 
 func (p *Printer) processOne(value reflect.Value, indent int) {
@@ -91,10 +112,10 @@ func (p *Printer) processOne(value reflect.Value, indent int) {
 
 		switch field.Kind() {
 		case reflect.Struct:
-			p.Show("%s * %s:", strings.Repeat("  ", indent), name)
+			p.Show(" %s * %s:", strings.Repeat("  ", indent), name)
 			p.processOne(reflect.ValueOf(field.Interface()), indent+1)
 		default:
-			p.Show("%s * %s: %v", strings.Repeat("  ", indent), name, field.Interface())
+			p.Show(" %s * %s: %v", strings.Repeat("  ", indent), name, field.Interface())
 		}
 	}
 }
