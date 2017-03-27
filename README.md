@@ -18,10 +18,10 @@ Twelve-Factor App](https://12factor.net/config) to modern container engines.
 
 This is good stuff. But there are a couple of challenges:
 
-1. They make it very easy to think you're configuring your app while
+1. Env vars make it very easy to think you're configuring your app while
 accidentally leaving out critial settings, or misspelling a variable, or
 putting an extra `_` where it wasn't needed. This can make debugging
-problematic.
+problematic. What config was it actually using when it ran out of memory?
 
 2. Discoverability is a challenge. One nice thing about config files is that
 they make it easy to see all the possible configuration settings in one place.
@@ -43,6 +43,8 @@ collected all together presents a possible soltuion:
 Once all the configuration has been generated, all CLI flags applied, dump the struct
 to the stdout of the application so that we can see not just what env vars were passed,
 but what the configuration was that was actually generated inside the application.**
+You can also see what defaults got applied, which overrides were taken into account,
+and exactly what was in the struct at startup time.
 
 You could do this in a lot of ways. This is for humans and humans don't read
 JSON easily, but you could still dump a TOML or YAML file, for example. But the
