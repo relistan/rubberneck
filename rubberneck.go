@@ -11,6 +11,12 @@ var (
 	expr *regexp.Regexp
 )
 
+// AddLineFeed will direct the Printer to add line feeds
+// at the end of each output. NoAddLineFeed will not. This
+// is useful for controlling the display of output when
+// functions exhibit different behavior. For example,
+// fmt.Printf wants line feeds added, whereas logrus.Infof
+// does not.
 const (
 	AddLineFeed = iota
 	NoAddLineFeed = iota
