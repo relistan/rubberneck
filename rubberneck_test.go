@@ -119,4 +119,33 @@ var _ = Describe("Rubberneck", func() {
 			})
 		})
 	})
+
+	Describe("handling values", func() {
+		var printFunc func(format string, v ...interface{})
+		var printable struct {
+			Bad *int
+		}
+		var output string
+		var printer *Printer
+
+		BeforeEach(func() {
+			output = ""
+
+			printFunc = func(format string, v ...interface{}) {
+				output += fmt.Sprintf(format, v...)
+			}
+
+			printable = struct {
+				Bad *int
+			}{}
+
+			printer = NewPrinter(printFunc, AddLineFeed)
+		})
+
+		It("handles nil pointers", func() {
+			test := func() { printer.Print(printable) }
+
+			Expect(test).NotTo(Panic())
+		})
+	})
 })

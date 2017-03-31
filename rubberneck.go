@@ -121,7 +121,15 @@ func (p *Printer) processOne(value reflect.Value, indent int) {
 			p.Show(" %s * %s:", strings.Repeat("  ", indent), name)
 			p.processOne(reflect.ValueOf(field.Interface()), indent+1)
 		default:
-			p.Show(" %s * %s: %v", strings.Repeat("  ", indent), name, field.Interface())
+			var val interface{}
+
+			// Elem() returns a Zero value when field is nil. So IsValid()
+			// and CanInterface() protect us from calling Interface()
+			// inappropriately.
+			if field.IsValid() && field.CanInterface() {
+				val = field.Interface()
+			}
+			p.Show(" %s * %s: %v", strings.Repeat("  ", indent), name, val)
 		}
 	}
 }
