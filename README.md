@@ -2,6 +2,7 @@ Rubberneck
 ==========
 
 [![godoc here](https://img.shields.io/badge/godoc-here-blue.svg)](http://godoc.org/github.com/relistan/rubberneck)
+[![Go Report Card](https://goreportcard.com/badge/github.com/relistan/rubberneck)](https://goreportcard.com/report/github.com/relistan/rubberneck)
 
 Pretty(ish) print configuration output on application startup! Make it easy
 to see what those env vars actually told your app to do!
