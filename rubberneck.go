@@ -18,7 +18,7 @@ var (
 // fmt.Printf wants line feeds added, whereas logrus.Infof
 // does not.
 const (
-	AddLineFeed = iota
+	AddLineFeed   = iota
 	NoAddLineFeed = iota
 )
 
@@ -35,7 +35,7 @@ type PrinterFunc func(format string, v ...interface{})
 // by fmt.Printf, log.Printf, various logging output levels
 // from the logrus package, and others.
 type Printer struct {
-	Show  PrinterFunc
+	Show PrinterFunc
 }
 
 func addLineFeed(fn PrinterFunc) PrinterFunc {
@@ -87,7 +87,7 @@ func (p *Printer) Print(objs ...interface{}) {
 // takes a label argument which is a string to be printed into the title bar in
 // the output.
 func (p *Printer) PrintWithLabel(label string, objs ...interface{}) {
-	p.Show("%s %s", label, strings.Repeat("-", 50 - len(label) - 1))
+	p.Show("%s %s", label, strings.Repeat("-", 50-len(label)-1))
 	for _, obj := range objs {
 		p.processOne(reflect.ValueOf(obj), 0)
 	}
