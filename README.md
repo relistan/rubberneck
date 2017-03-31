@@ -53,6 +53,21 @@ JSON easily, but you could still dump a TOML or YAML file, for example. But the
 output won't nest easily into your logging system, for example. So Rubberneck
 tries to solve that in a really simple way.
 
+Installing
+----------
+
+You may always import this repo from GitHub, which will get you whatever is
+on the master branch. But I recommend using the [gopkg.in](http://gopkg.in) service, which provides versioned repo support for the go tools. To get this
+package, I recommend: 
+```
+go get gopkg.in/relistan/rubberneck.v1
+```
+
+To import it:
+```
+import "gopkg.in/relistan/rubberneck.v1"
+```
+
 Usage
 -----
 
