@@ -31,6 +31,9 @@ var _ = Describe("Rubberneck", func() {
 
 			printFunc = func(format string, v ...interface{}) {
 				didRun = true
+				if format[len(format)-1] == '\n' {
+					didAddLineFeed = true
+				}
 				receivedFormat = format
 			}
 
@@ -43,7 +46,7 @@ var _ = Describe("Rubberneck", func() {
 
 			printer.Print(printable)
 			Expect(didRun).To(BeTrue())
-			Expect(receivedFormat[len(receivedFormat)-1]).NotTo(Equal("\n"))
+			Expect(didAddLineFeed).To(BeFalse())
 		})
 
 		It("returns a properly configured Printer with line feed", func() {
@@ -52,8 +55,7 @@ var _ = Describe("Rubberneck", func() {
 
 			printer.Print(printable)
 			Expect(didRun).To(BeTrue())
-			// Not sure why gomega needs this type conversion
-			Expect(int32(receivedFormat[len(receivedFormat)-1])).To(Equal('\n'))
+			Expect(didAddLineFeed).To(BeTrue())
 		})
 	})
 
