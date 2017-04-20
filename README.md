@@ -17,7 +17,7 @@ It's recommended to use the gopkg.in service for this package since it means
 you'll always get a tagged release that maintains a stable API.
 
 ```
-go get http://gopkg.in/relistan/rubberneck.v1
+go get gopkg.in/relistan/rubberneck.v1
 ```
 
 The Problem This Solves
