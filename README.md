@@ -10,8 +10,18 @@ to see what those env vars actually told your app to do!
 
 ![Rubberneck](assets/rubberneck.png)
 
-The Problem
------------
+Installation
+------------
+
+It's recommended to use the gopkg.in service for this package since it means
+you'll always get a tagged release that maintains a stable API.
+
+```
+go get http://gopkg.in/relistan/rubberneck.v1
+```
+
+The Problem This Solves
+-----------------------
 
 Modern applications are often configured from environment variables, or from a
 combination of environment variables and command line flags, or config files.
