@@ -49,7 +49,7 @@ A Solution
 In Go, configuration is usually stored in a struct or nested struct. This makes
 using systems like [envconfig](https://github.com/kelseyhightower/envconfig) or
 [Kingpin](https://github.com/alecthomas/kingpin) really easy. Having the configuration
-collected all together presents a possible soltuion:
+collected all together presents a possible solution:
 
 **One possibility is to print out your application's configuration on startup.
 Once all the configuration has been generated, all CLI flags applied, dump the struct
