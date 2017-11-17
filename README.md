@@ -149,6 +149,35 @@ The various logrus functions conform to this as do those of various other
 packages. If yours doesn't, or you want to do something else with the output,
 you can pass an anonymous function that does what you need.
 
+Masking values
+--------------
+
+Printing configuration settings may also include some sensitive data that you
+might not want to see in your logs. This includes passwords, private keys etc.
+You can provide a masking function to filter out these values. For example:
+
+```go
+    var redacted = "[REDACTED]"
+    maskFunc := func(argument string) *string {
+			if argument == "Password" {
+				return &redacted
+			}
+			return nil
+		}
+    printer := rubberneck.NewPrinterWithKeyMasking(log.Printf, maskFunc, rubberneck.NoAddLineFeed)
+    printer.Print(opts)
+```
+
+The above masking will then mask the password setting:
+
+```
+Settings -----------------------------------------
+  * AdvertiseIP: 192.168.168.168
+  * ClusterIPs: [10.3.18.204 123.123.123.123]
+  * Password: [REDACTED]
+--------------------------------------------------
+```
+
 Caveats
 -------
 

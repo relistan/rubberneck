@@ -30,12 +30,17 @@ func init() {
 // many functions available in other packages.
 type PrinterFunc func(format string, v ...interface{})
 
+// MaskFunc takes a config argument and returns a string that is used
+// to mask config values. This is useful to redact passwords etc.
+type MaskFunc func(argument string) *string
+
 // Printer defines the signature of a function that can be
 // used to display the configuration. This signature is used
 // by fmt.Printf, log.Printf, various logging output levels
 // from the logrus package, and others.
 type Printer struct {
 	Show PrinterFunc
+	Mask MaskFunc
 }
 
 func addLineFeed(fn PrinterFunc) PrinterFunc {
@@ -63,6 +68,14 @@ func NewPrinter(fn PrinterFunc, lineFeed int) *Printer {
 		p.Show = addLineFeed(fn)
 	}
 
+	return p
+}
+
+// NewPrinterWithKeyMasking returns a Printer configured to use printer function
+// `fn` for output and the masking function `mk` for redacting certain keys.
+func NewPrinterWithKeyMasking(fn PrinterFunc, mk MaskFunc, lineFeed int) *Printer {
+	p := NewPrinter(fn, lineFeed)
+	p.Mask = mk
 	return p
 }
 
@@ -128,6 +141,12 @@ func (p *Printer) processOne(value reflect.Value, indent int) {
 			// inappropriately.
 			if field.IsValid() && field.CanInterface() {
 				val = field.Interface()
+			}
+
+			if p.Mask != nil {
+				if maskedValue := p.Mask(name); maskedValue != nil {
+					val = *maskedValue
+				}
 			}
 			p.Show(" %s * %s: %v", strings.Repeat("  ", indent), name, val)
 		}
