@@ -14,6 +14,7 @@ var _ = Describe("Rubberneck", func() {
 		It("returns a properly configured Printer", func() {
 			printer := NewDefaultPrinter()
 			Expect(printer.Show).NotTo(BeNil())
+			Expect(printer.Mask).To(BeNil())
 		})
 	})
 
@@ -56,6 +57,48 @@ var _ = Describe("Rubberneck", func() {
 			printer.Print(printable)
 			Expect(didRun).To(BeTrue())
 			Expect(didAddLineFeed).To(BeTrue())
+		})
+	})
+
+	Describe("NewPrinterWithKeyMasking()", func() {
+		var didPrint bool
+		var didMask bool
+
+		var printFunc func(format string, v ...interface{})
+		var maskFunc func(argument string) *string
+		var printable struct{ Content string }
+		var printedValue = ""
+
+		BeforeEach(func() {
+			didPrint = false
+			didMask = false
+
+			printFunc = func(format string, v ...interface{}) {
+				didPrint = true
+				printedValue += fmt.Sprintf(format, v...)
+			}
+			maskFunc = func(argument string) *string {
+				if argument == "Content" {
+					didMask = true
+					mask := "MASKED"
+					return &mask
+				}
+				return nil
+			}
+
+			printable = struct{ Content string }{"grendel"}
+		})
+
+		It("returns a properly configured Printer", func() {
+			printer := NewPrinterWithKeyMasking(printFunc, maskFunc, AddLineFeed)
+			Expect(printer.Show).NotTo(BeNil())
+			Expect(printer.Mask).NotTo(BeNil())
+
+			printer.Print(printable)
+			Expect(didPrint).To(BeTrue())
+			Expect(didMask).To(BeTrue())
+			Expect(printedValue).NotTo(HaveLen(0))
+			Expect(printedValue).To(ContainSubstring("MASKED"))
 		})
 	})
 
