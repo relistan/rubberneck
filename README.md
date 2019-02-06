@@ -82,7 +82,6 @@ Usage
 -----
 
 The most basic usage is:
-
 ```go
 	rubberneck.Print(myConfigStruct)
 ```
