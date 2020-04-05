@@ -30,7 +30,7 @@ var _ = Describe("Rubberneck", func() {
 		// Without it, it says receivedFormat is not used. If I remove
 		// receivedFormat it complains about it in the BeforeEach block,
 		// because it's _obviously_ not defined.
-		if receivedFormat == "" {}
+		if receivedFormat == "" { receivedFormat = "" }
 
 		BeforeEach(func() {
 			didRun = false
