@@ -1,4 +1,7 @@
+github.com/onsi/ginkgo v1.2.1-0.20170318221715-67b9df7f55fe h1:d3gNxYlRvgsR9X/YxcYc0e0wsFAhC6u5zM51TC+o+EA=
 github.com/onsi/ginkgo v1.2.1-0.20170318221715-67b9df7f55fe/go.mod h1:lLunBs/Ym6LB5Z9jYTR76FiuTmxDTDusOGeTQH+WWjE=
+github.com/onsi/gomega v1.1.0 h1:e3YP4dN/HYPpGh29X1ZkcxcEICsOls9huyVCRBaxjq8=
 github.com/onsi/gomega v1.1.0/go.mod h1:C1qb7wdrVGGVU+Z6iS04AVkA3Q65CEZX59MT0QO5uiA=
 golang.org/x/sys v0.0.0-20161016222106-002cbb5f9524/go.mod h1:STP8DvDyc/dI5b8T5hshtkjS+E42TnysNCUPdjciGhY=
+gopkg.in/yaml.v2 v2.0.0-20170208141851-a3f3340b5840 h1:BftvRMCaj0KX6UeD7gnNJv0W8b4HAYTEWes978CoWlY=
 gopkg.in/yaml.v2 v2.0.0-20170208141851-a3f3340b5840/go.mod h1:JAlM8MvJe8wmxCU4Bli9HhUf9+ttbYbLASfIpnQbh74=
