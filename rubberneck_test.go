@@ -26,6 +26,12 @@ var _ = Describe("Rubberneck", func() {
 		var printable struct{ Content string }
 		var receivedFormat string
 
+		// This ridiculous line is required to get Go to compile tests.
+		// Without it, it says receivedFormat is not used. If I remove
+		// receivedFormat it complains about it in the BeforeEach block,
+		// because it's _obviously_ not defined.
+		if receivedFormat == "" {}
+
 		BeforeEach(func() {
 			didRun = false
 			didAddLineFeed = false
