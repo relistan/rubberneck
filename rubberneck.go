@@ -11,12 +11,10 @@ var (
 	expr *regexp.Regexp
 )
 
-// AddLineFeed will direct the Printer to add line feeds
-// at the end of each output. NoAddLineFeed will not. This
-// is useful for controlling the display of output when
-// functions exhibit different behavior. For example,
-// fmt.Printf wants line feeds added, whereas logrus.Infof
-// does not.
+// AddLineFeed will direct the Printer to add line feeds at the end of each
+// output. NoAddLineFeed will not. This is useful for controlling the display
+// of output when functions exhibit different behavior. For example, fmt.Printf
+// wants line feeds added, whereas logrus.Infof does not.
 const (
 	AddLineFeed   = iota
 	NoAddLineFeed = iota
@@ -26,18 +24,17 @@ func init() {
 	expr = regexp.MustCompile("^[a-z]")
 }
 
-// Conforms to the signature used by fmt.Printf and log.Printf among
-// many functions available in other packages.
+// Conforms to the signature used by fmt.Printf and log.Printf among many
+// functions available in other packages.
 type PrinterFunc func(format string, v ...interface{})
 
-// MaskFunc takes a config argument and returns a string that is used
-// to mask config values. This is useful to redact passwords etc.
+// MaskFunc takes a config argument and returns a string that is used to mask
+// config values. This is useful to redact passwords etc.
 type MaskFunc func(argument string) *string
 
-// Printer defines the signature of a function that can be
-// used to display the configuration. This signature is used
-// by fmt.Printf, log.Printf, various logging output levels
-// from the logrus package, and others.
+// Printer defines the signature of a function that can be used to display the
+// configuration. This signature is used by fmt.Printf, log.Printf, various
+// logging output levels from the logrus package, and others.
 type Printer struct {
 	Show PrinterFunc
 	Mask MaskFunc
@@ -59,8 +56,8 @@ func NewDefaultPrinter() *Printer {
 	}
 }
 
-// NewPrinter returns a Printer configured to use the supplied function
-// to output to the supplied function.
+// NewPrinter returns a Printer configured to use the supplied function to
+// output to the supplied function.
 func NewPrinter(fn PrinterFunc, lineFeed int) *Printer {
 	p := &Printer{Show: fn}
 
@@ -71,8 +68,9 @@ func NewPrinter(fn PrinterFunc, lineFeed int) *Printer {
 	return p
 }
 
-// NewPrinterWithKeyMasking returns a Printer configured to use printer function
-// `fn` for output and the masking function `mk` for redacting certain keys.
+// NewPrinterWithKeyMasking returns a Printer configured to use printer
+// function `fn` for output and the masking function `mk` for redacting certain
+// keys.
 func NewPrinterWithKeyMasking(fn PrinterFunc, mk MaskFunc, lineFeed int) *Printer {
 	p := NewPrinter(fn, lineFeed)
 	p.Mask = mk
@@ -83,8 +81,9 @@ func NewPrinterWithKeyMasking(fn PrinterFunc, mk MaskFunc, lineFeed int) *Printe
 // for displaying the configuration of an application on startup. It uses a
 // default label of 'Settings' for the output.
 func (p *Printer) Print(objs ...interface{}) {
-	// Add some protection against accidentally providing this method with
-	// a label.
+	// Add some protection against accidentally providing this method with a
+	// label.
+
 	if len(objs) > 0 {
 		switch objs[0].(type) {
 		case string:
@@ -117,8 +116,8 @@ func (p *Printer) processOne(value reflect.Value, indent int) {
 	for i := 0; i < value.NumField(); i++ {
 		name := t.Field(i).Name
 
-		// Other methods of detecting unexported fields seem unreliable
-		// or different between Go versions and Go compilers (gc vs gccgo)
+		// Other methods of detecting unexported fields seem unreliable or
+		// different between Go versions and Go compilers (gc vs gccgo)
 		if expr.MatchString(name) {
 			continue
 		}
@@ -136,8 +135,8 @@ func (p *Printer) processOne(value reflect.Value, indent int) {
 		default:
 			var val interface{}
 
-			// Elem() returns a Zero value when field is nil. So IsValid()
-			// and CanInterface() protect us from calling Interface()
+			// Elem() returns a Zero value when field is nil. So IsValid() and
+			// CanInterface() protect us from calling Interface()
 			// inappropriately.
 			if field.IsValid() && field.CanInterface() {
 				val = field.Interface()
@@ -153,8 +152,8 @@ func (p *Printer) processOne(value reflect.Value, indent int) {
 	}
 }
 
-// Print configures a default printer to output to stdout and
-// then prints the object.
+// Print configures a default printer to output to stdout and then prints the
+// object.
 func Print(obj interface{}) {
 	NewDefaultPrinter().Print(obj)
 }
