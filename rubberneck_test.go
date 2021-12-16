@@ -157,6 +157,11 @@ var _ = Describe("Rubberneck", func() {
 				printer.PrintWithLabel("saga", &printable)
 				Expect(output).NotTo(ContainSubstring("private"))
 			})
+
+			It("handles labels longer than 50", func() {
+				printer.PrintWithLabel("0123456789012345678901234567890123456789012345678901234567891234", &printable)
+				Expect(output).To(ContainSubstring("------------------------------------------------------"))
+			})
 		})
 
 		Describe("Print()", func() {

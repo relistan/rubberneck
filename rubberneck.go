@@ -99,12 +99,16 @@ func (p *Printer) Print(objs ...interface{}) {
 // takes a label argument which is a string to be printed into the title bar in
 // the output.
 func (p *Printer) PrintWithLabel(label string, objs ...interface{}) {
-	p.Show("%s %s", label, strings.Repeat("-", 50-len(label)-1))
+	labelLen := 50
+	if len(label) > 50 {
+		labelLen = len(label) + 1
+	}
+
+	p.Show("%s %s", label, strings.Repeat("-", labelLen-len(label)-1))
 	for _, obj := range objs {
 		p.processOne(reflect.ValueOf(obj), 0)
 	}
-	p.Show("%s", strings.Repeat("-", 50))
-
+	p.Show("%s", strings.Repeat("-", labelLen))
 }
 
 func (p *Printer) processOne(value reflect.Value, indent int) {
