@@ -177,6 +177,23 @@ Settings -----------------------------------------
 --------------------------------------------------
 ```
 
+It is also possible to mask based on the value of the field, by passing in a
+function that can accept both the key and the value. This is documented into
+godoc, but an example is:
+
+```go
+    maskFunc := func(argument string, val interface{}) *string {
+			if argument == "URL" {
+				// parse out the URL from val
+				// return a pointer to the part of the string you want
+				// to still show
+			}
+			return nil
+		}
+    printer := rubberneck.NewPrinterWithKeyValueMasking(log.Printf, maskFunc, rubberneck.NoAddLineFeed)
+    printer.Print(opts)
+```
+
 Caveats
 -------
 

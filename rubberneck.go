@@ -32,12 +32,17 @@ type PrinterFunc func(format string, v ...interface{})
 // config values. This is useful to redact passwords etc.
 type MaskFunc func(argument string) *string
 
+// MaskWithValueFunc is the same as MaskFunc but provides the original value to
+// the masking function, which is expected to identify the type itself.
+type MaskWithValueFunc func(argument string, value interface{}) *string
+
 // Printer defines the signature of a function that can be used to display the
 // configuration. This signature is used by fmt.Printf, log.Printf, various
 // logging output levels from the logrus package, and others.
 type Printer struct {
-	Show PrinterFunc
-	Mask MaskFunc
+	Show          PrinterFunc
+	Mask          MaskFunc
+	MaskWithValue MaskWithValueFunc
 }
 
 func addLineFeed(fn PrinterFunc) PrinterFunc {
@@ -74,6 +79,15 @@ func NewPrinter(fn PrinterFunc, lineFeed int) *Printer {
 func NewPrinterWithKeyMasking(fn PrinterFunc, mk MaskFunc, lineFeed int) *Printer {
 	p := NewPrinter(fn, lineFeed)
 	p.Mask = mk
+	return p
+}
+
+// NewPrinterWithKeyValueMasking returns a Printer configured to use printer
+// function `fn` for output and the value masking function `mk` for redacting
+// certain keys.
+func NewPrinterWithKeyValueMasking(fn PrinterFunc, mk MaskWithValueFunc, lineFeed int) *Printer {
+	p := NewPrinter(fn, lineFeed)
+	p.MaskWithValue = mk
 	return p
 }
 
@@ -148,6 +162,10 @@ func (p *Printer) processOne(value reflect.Value, indent int) {
 
 			if p.Mask != nil {
 				if maskedValue := p.Mask(name); maskedValue != nil {
+					val = *maskedValue
+				}
+			} else if p.MaskWithValue != nil {
+				if maskedValue := p.MaskWithValue(name, val); maskedValue != nil {
 					val = *maskedValue
 				}
 			}
