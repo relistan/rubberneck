@@ -13,11 +13,8 @@ to see what those env vars actually told your app to do!
 Installation
 ------------
 
-It's recommended to use the gopkg.in service for this package since it means
-you'll always get a tagged release that maintains a stable API.
-
 ```
-go get gopkg.in/relistan/rubberneck.v1
+go get github.com/relistan/rubberneck
 ```
 
 The Problem This Solves
